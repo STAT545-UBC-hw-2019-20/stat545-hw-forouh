@@ -12,4 +12,4 @@
 
 
 
->[This is my linkedin profile](https://www.linkedin.com/in/forouh-kalantari-7b2895a4/). Here you will find more information about my education background and work experienc. 
+>[This is my linkedin profile](https://www.linkedin.com/in/forouh-kalantari-7b2895a4/). Here you will find more information about my education background and work experience 
