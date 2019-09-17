@@ -5,7 +5,11 @@
 
 **let's go to the table below :thumbsup:**
 
-|    **Full Name**    | Forouh Kalantari |
+| **Full name**  |  Forouh Kalantari   |
+|----------------|---------------------|
+|     Title      |   PhD student       |
+|   Program      |    Pathology        |
+
 
 
 >My name is [Forouh](https://www.linkedin.com/in/forouh-kalantari-7b2895a4/) and i gjsdghfjhdgjhdfg dfbgkdhfgkjhdfkhgkh dfkghkjdfgkjdfhg dkfjghkdfhgkjdhgkjh
