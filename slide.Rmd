@@ -1,0 +1,44 @@
+---
+title: "Gapminder Dataset Expolartion"
+output: 
+  ioslides_presentation:
+    widescreen: true
+    smaller: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+## R Markdown presentation slides
+
+These Presentarion slides has been created for [Assignment 1 ,exercise 3](https://stat545.stat.ubc.ca/evaluation/hw01/hw01/)
+
+
+```{r}
+library(gapminder)
+
+```
+
+## This is the Summary of '**Gapminder**'
+
+```{r}
+summary(gapminder)
+```
+
+## This is the Structure of '**Gapminder**'
+```{r}
+str(gapminder)
+```
+
+
+## Mean of lifexpectancy 
+```{r, echo=TRUE}
+mean(gapminder$lifeExp)
+```
+
+
+##
+```{r}
+plot(gapminder$year, gapminder$pop, main = "Population over the years")
+
+
