@@ -3,7 +3,7 @@
 ## In this repo you will know me :bowtie:
 
 
-**let's go to the table below** 
+**let's start with the table below** 
 
 | **Full name**  |  Forouh Kalantari   |
 |----------------|---------------------|
