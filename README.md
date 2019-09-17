@@ -1,4 +1,4 @@
-# This is a assignment 1,excersise 1 STAT 545 Repository
+# This is assignment 1,excersise 1 STAT 545 Repository 
 
 ## In this repo you will know me :bowtie:
 
