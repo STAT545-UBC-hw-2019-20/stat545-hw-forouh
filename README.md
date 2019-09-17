@@ -3,7 +3,7 @@
 ## In this repo you will know me :bowtie:
 
 
-**let's go to the table below :thumbsup:**
+**let's go to the table below** 
 
 | **Full name**  |  Forouh Kalantari   |
 |----------------|---------------------|
@@ -12,6 +12,4 @@
 
 
 
->My name is [Forouh](https://www.linkedin.com/in/forouh-kalantari-7b2895a4/) and i gjsdghfjhdgjhdfg dfbgkdhfgkjhdfkhgkh dfkghkjdfgkjdfhg dkfjghkdfhgkjdhgkjh
->fehdgadjhgk
->hgdfhj
+>[This is the linkedin profile](https://www.linkedin.com/in/forouh-kalantari-7b2895a4/)
