@@ -7,8 +7,8 @@
 
 | **Full name**  |  Forouh Kalantari   |
 |----------------|---------------------|
-|     Title      |   PhD student       |
-|   Program      |    Pathology        |
+|  **Title**     |   PhD student       |
+| **Program**    |    Pathology        |
 
 
 
