@@ -21,25 +21,25 @@ library(gapminder)
 
 ## This is the Summary of '**Gapminder**'
 
-```{r}
+```{r, echo=TRUE}
 summary(gapminder)
 ```
 
 ## This is the Structure of '**Gapminder**'
-```{r}
+```{r, echo=TRUE}
 str(gapminder)
 ```
 
 
 ## Mean of lifexp of gapminder
 ###### mean(gapminder$lifeExp)
-```{r}
+```{r, echo=TRUE}
 mean(gapminder$lifeExp)
 ```
 
 ## Plots
 
-```{r}
+```{r, echo=TRUE}
 plot(gapminder$year, gapminder$pop, main = "Population over the years")
 plot(gapminder$year, gapminder$gdpPercap, main = "GDP per capita over the years")
 ```
