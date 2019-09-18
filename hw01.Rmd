@@ -32,7 +32,7 @@ str(gapminder)
 
 
 ## Mean of lifexp of gapminder
-###### mean(gapminder$lifeExp)
+
 ```{r, echo=TRUE}
 mean(gapminder$lifeExp)
 ```
