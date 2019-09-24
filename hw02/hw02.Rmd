@@ -1,0 +1,89 @@
+---
+title: "Assignment 2" 
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, error = FALSE)
+```
+
+```{r}
+library(gapminder) 
+library(rmarkdown)
+library(tibble)
+library(DT)
+library(tidyverse)
+library(tsibble)
+library(scales)
+library(dplyr)
+library(ggplot2)
+```
+
+# gapminder into tibble 
+
+```{r}
+datatable(as_tibble(gapminder)) 
+```
+#1.1
+```{r}
+n <-  gapminder %>%
+  filter(country == 'Afghanistan' | country == 'Canada' | country == 'Denmark',
+         year >= 1970 & year < 1980)
+knitr::kable(n, booktabs = TRUE, align = 'l', caption = "A table of select countries in 1970s ") 
+
+```
+#1.2
+```{r}
+m <- n %>%
+  select(country, gdpPercap)
+knitr::kable(m, booktabs = TRUE, align = 'l', caption = " Table of country and  gdp ") 
+```
+#1.3
+```{r}
+
+```
+#1.4
+```{r}
+datatable(gapminder %>%
+  group_by(country)%>% 
+  summarise(gdpPercap = max(gdpPercap)))
+```
+#1.5
+```{r}
+gapminder %>% 
+  filter(country == "Canada") %>%
+  select(gdpPercap, lifeExp) %>%
+  ggplot(aes(gdpPercap, lifeExp)) + geom_point(alpha= 0.8) + 
+scale_x_log10("gdppercap",labels = scales::dollar_format()) +   ylab("life Expectancy")  
+```
+#2
+
+```{r}
+gapminder %>% 
+  select(continent,gdpPercap)%>%
+  group_by(continent)%>%
+  summarise(max = max(gdpPercap), min = min(gdpPercap), 
+            mean = mean(gdpPercap), median = median(gdpPercap),sd = sd(gdpPercap))
+```
+# 3 
+
+```{r}
+gapminder %>%
+  filter( country == "Iran")%>%
+  select( year,pop)%>%
+  ggplot(aes(year, pop)) + geom_point(alpha= 0.8) + 
+xlab("year") + ylab("pop")  
+```
+
+#3 2nd plot
+```{r}
+library(corrplot)
+c <- gapminder %>%
+  filter( country == "Iran")%>%
+  select( lifeExp,gdpPercap, pop)
+c
+
+cor1 <- cor(c)
+corrplot(cor1, method = "circle")
+  
+```
