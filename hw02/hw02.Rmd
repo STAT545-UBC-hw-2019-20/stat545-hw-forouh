@@ -125,7 +125,7 @@ gapminder %>%
        color = "Continent")
 ```
 
-#3 2nd plot.is is a boxplot of  the life expectancy of continents between 2003-2007
+#3 2nd plot.is a boxplot of  the life expectancy of continents between 2003-2007
 ```{r}
 gapminder %>%
   filter(year >= 2003) %>%
