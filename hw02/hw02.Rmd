@@ -1,7 +1,10 @@
 ---
-title: "Assignment 2" 
+title: "Assignment 2 gapminder exploration" 
+Author: " Forouh Kalantari"
+Date: 2019-09-24
 output: html_document
 ---
+###### In this assignment I explore dataset using "gapminder" R package and "tidyverse" Rpackage 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, error = FALSE)
@@ -24,7 +27,11 @@ library(ggplot2)
 ```{r}
 datatable(as_tibble(gapminder)) 
 ```
-#1.1
+
+## Exercise 1: Basic `dplyr`
+
+#1.1 filter the `gapminder` data to include only data from Afghanistan,Canada, and Denmark in the 1970's
+
 ```{r}
 n <-  gapminder %>%
   filter(country == 'Afghanistan' | country == 'Canada' | country == 'Denmark',
@@ -32,58 +39,98 @@ n <-  gapminder %>%
 knitr::kable(n, booktabs = TRUE, align = 'l', caption = "A table of select countries in 1970s ") 
 
 ```
-#1.2
+
+#1.2 show the country and GDP per capita for each of the countries filtered.
+
+
 ```{r}
 m <- n %>%
   select(country, gdpPercap)
 knitr::kable(m, booktabs = TRUE, align = 'l', caption = " Table of country and  gdp ") 
 ```
-#1.3
+
+#1.3 filter the `gapminder` dataset to all entries that have experienced a drop in life expectancy.
+
+
 ```{r}
+gapminder %>%
+  group_by(continent, country) %>%
+  mutate(lifeExp_inc = lifeExp - lag(lifeExp, order_by = year)) %>%
+  filter(lifeExp_inc < 0) %>%
+  DT::datatable() %>%
+  DT::formatRound(columns = c("lifeExp", "gdpPercap", "lifeExp_inc"),
+                  digits = 2)
+
 
 ```
-#1.4
+
+#1.4 filter the `gapminder` dataset so that it shows the max GDP per capita experienced by each country.
+
+
 ```{r}
 datatable(gapminder %>%
   group_by(country)%>% 
   summarise(gdpPercap = max(gdpPercap)))
 ```
-#1.5
+
+#1.5 produce a scatterplot of Canada's life expectancy vs GDP per capita.
+
 ```{r}
 gapminder %>% 
   filter(country == "Canada") %>%
   select(gdpPercap, lifeExp) %>%
   ggplot(aes(gdpPercap, lifeExp)) + geom_point(alpha= 0.8) + 
-scale_x_log10("gdppercap",labels = scales::dollar_format()) +   ylab("life Expectancy")  
+scale_x_log10("gdppercap",labels = scales::dollar_format()) +   ylab("life Expectancy") 
+
 ```
-#2
+
+## Exercise 2: Explore individual variables with `dplyr`
+
+#2.1 pick one categorical variable (continent) and one quantitative variable (gdpPercap). 
+# First I plot the data to obtain a visual understanding of data.
+# The geom_point plot shows that the Maximum gdpPercap is in Asia and minimum is in africa, also based on data distribution we would expect higher Sd for Asia continent.
+
+```{r}
+gapminder %>% 
+  select(continent,gdpPercap) %>%
+  mutate(continent= factor(continent)) %>% 
+  ggplot(aes(continent, gdpPercap)) +
+  scale_y_log10("gdpPercap", labels=scales::dollar_format()) +
+  geom_point() + xlab("continent")
+```
+
+
+#2.2The table below reflects the data from geom_point plot. 
 
 ```{r}
 gapminder %>% 
   select(continent,gdpPercap)%>%
   group_by(continent)%>%
-  summarise(max = max(gdpPercap), min = min(gdpPercap), 
-            mean = mean(gdpPercap), median = median(gdpPercap),sd = sd(gdpPercap))
+  summarise(max_gdp = max(gdpPercap), min_gdp = min(gdpPercap), 
+            mean_gdp = mean(gdpPercap),median_gdp = median(gdpPercap),sd_gdp = sd(gdpPercap))
 ```
-# 3 
 
+
+## Exercise 3 Explore various plot types
+
+#This is a scatterplot of continents life expectancy vs GDP per capita. 
+
+```{r}
+ gapminder %>%
+  ggplot(aes(lifeExp, gdpPercap)) +
+  geom_point(aes(color = continent)) +
+  scale_y_log10() +
+  labs(x = "Life Expectancy",
+       y = "gdpPercap",
+       color = "Continent")
+```
+
+#3 2nd plot.is is a boxplot of  the life expectancy of continents between 2003-2007
 ```{r}
 gapminder %>%
-  filter( country == "Iran")%>%
-  select( year,pop)%>%
-  ggplot(aes(year, pop)) + geom_point(alpha= 0.8) + 
-xlab("year") + ylab("pop")  
-```
-
-#3 2nd plot
-```{r}
-library(corrplot)
-c <- gapminder %>%
-  filter( country == "Iran")%>%
-  select( lifeExp,gdpPercap, pop)
-c
-
-cor1 <- cor(c)
-corrplot(cor1, method = "circle")
-  
+  filter(year >= 2003) %>%
+  ggplot(aes(continent, lifeExp)) +
+  geom_boxplot() +
+  labs(x = "Continent",
+       y = "Life Expectancy (years)")
 ```
