@@ -1,0 +1,98 @@
+---
+title: "Untitled"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+library(gapminder) 
+library(rmarkdown)
+library(tibble)
+library(DT)
+library(tidyverse)
+library(tsibble)
+library(scales)
+library(dplyr)
+library(ggplot2)
+```
+
+
+#(Task Option 2)The maximum and minimum of GDP per capita for all continents.
+
+#The table below and ggplot show maximum and minimun of gdpPercap for all continents.
+
+```{r}
+gapminder %>% 
+group_by(continent) %>% 
+summarize(maxgdp = max(gdpPercap),mingdp= min(gdpPercap))
+```
+
+
+
+```{r}
+gapminder %>%
+
+  ggplot(aes(continent, gdpPercap)) +
+
+  geom_boxplot(size = 1.5) +
+
+  scale_y_log10(labels = scales::dollar_format()) +
+
+  labs(title = "GDP per Capita per Continent", x = "Continent", y = "GDP per Capita")
+```
+
+
+
+#(Task Option 3)Look at the spread of GDP per capita within the continents.
+
+```{r}
+# measures of spread = range (max- min), Inter-quartile range, standard deviation, median absolute deviation
+
+a1 <- gapminder %>%
+  filter(continent == "Africa") %>%
+  group_by(year) %>%
+  summarise(range= max(gdpPercap) - min(gdpPercap),
+            IQR = IQR(gdpPercap),
+            Standard_Deviation = sd(gdpPercap),
+            MAD = mad(gdpPercap))
+
+a1 %>%  ggplot(aes(year,range))+
+  geom_line(alpha = 0.5)+
+  xlab("Year") + ylab("Range")
+
+
+
+gapminder %>% 
+  ggplot(aes(gdpPercap, continent, fill = continent)) +
+  ggridges::geom_density_ridges()
+
+```
+
+
+
+
+
+#(Task Option 5)How is life expectancy changing over time on different continents?
+
+
+```{r}
+gapminder %>%
+ggplot(aes(year, lifeExp, group = country, colour = continent)) +
+  geom_line(alpha = 0.5) +
+  scale_x_log10( labels = scales::comma_format())+
+  facet_wrap(~ continent)
+
+Africa <- gapminder %>%
+  filter(continent == "Africa") %>%
+  group_by(year) %>%
+  summarise(mean= mean(lifeExp))
+
+Africa
+  
+
+
+```
+
+#Based on this plot except for some countries in Africa and a few countries in Asia and America life expectancy has increased for most countries over the years. 
