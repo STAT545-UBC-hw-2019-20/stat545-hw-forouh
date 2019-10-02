@@ -24,7 +24,7 @@ library(scales)
 
 #(Task Option 2)The maximum and minimum of GDP per capita for all continents.
 
-```{r}
+```{r, echo=TRUE}
 
 #The table below show maximum and minimun of gdpPercap for all continents.
 
@@ -34,7 +34,7 @@ summarize(maxgdp = max(gdpPercap),mingdp= min(gdpPercap))
 ```
 
 
-```{r}
+```{r, echo=TRUE}
 
 # using this box plot we can show the minimum and maximum of gdppercap for each continent. 
 
@@ -48,7 +48,7 @@ labs(title = "GDP per Capita per Continent", x = "Continent", y = "GDP per Capit
 
 #(Task Option 3)Look at the spread of GDP per capita within the continents.
 
-```{r}
+```{r, echo=TRUE}
 
 # using Geom_density_ridges plot we can visualize the spread of gdpPercap between continents. Based on this plot we can say Ocenia and Europe have more variability of gdpPercapita between their countries. In contrast Asia, Africa and Americas show a narrow spread.
 
@@ -62,7 +62,7 @@ gapminder %>%
 
 #(Task Option 5)How is life expectancy changing over time on different continents?
 
-```{r}
+```{r, echo=TRUE}
 # 1: By using separate plot for each continent. Based on these plots except for some countries in Africa and a few countries in Asia and Americas with some fluctuations, life expectancy has increased for most countries over the years.
 
 gapminder %>%
@@ -71,7 +71,7 @@ ggplot(aes(year, lifeExp, group = country, colour = continent)) +
   scale_x_log10( labels = scales::comma_format())+
   facet_wrap(~ continent)
 ```
-```{r}
+```{r, echo=TRUE}
 
 # 2: By calculating the average of life expectancy for each continent and showing in one plot. 
 
