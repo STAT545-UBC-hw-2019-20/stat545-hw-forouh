@@ -1,5 +1,7 @@
 ---
-title: "Untitled"
+title: "Assinment 03"
+author: "Forouh"
+date: "2019/10/01"
 output: html_document
 ---
 ```{r setup, include=FALSE}
@@ -16,83 +18,68 @@ library(tsibble)
 library(scales)
 library(dplyr)
 library(ggplot2)
+library(scales)
 ```
 
 
 #(Task Option 2)The maximum and minimum of GDP per capita for all continents.
 
-#The table below and ggplot show maximum and minimun of gdpPercap for all continents.
-
 ```{r}
+
+#The table below show maximum and minimun of gdpPercap for all continents.
+
 gapminder %>% 
 group_by(continent) %>% 
 summarize(maxgdp = max(gdpPercap),mingdp= min(gdpPercap))
 ```
 
 
-
 ```{r}
+
+# using this box plot we can show the minimum and maximum of gdppercap for each continent. 
+
 gapminder %>%
-
-  ggplot(aes(continent, gdpPercap)) +
-
-  geom_boxplot(size = 1.5) +
-
-  scale_y_log10(labels = scales::dollar_format()) +
-
-  labs(title = "GDP per Capita per Continent", x = "Continent", y = "GDP per Capita")
+ggplot(aes(continent, gdpPercap)) +
+geom_boxplot(size = 1.5) +
+scale_y_log10(labels = scales::dollar_format()) +
+labs(title = "GDP per Capita per Continent", x = "Continent", y = "GDP per Capita")
 ```
-
 
 
 #(Task Option 3)Look at the spread of GDP per capita within the continents.
 
 ```{r}
-# measures of spread = range (max- min), Inter-quartile range, standard deviation, median absolute deviation
 
-a1 <- gapminder %>%
-  filter(continent == "Africa") %>%
-  group_by(year) %>%
-  summarise(range= max(gdpPercap) - min(gdpPercap),
-            IQR = IQR(gdpPercap),
-            Standard_Deviation = sd(gdpPercap),
-            MAD = mad(gdpPercap))
-
-a1 %>%  ggplot(aes(year,range))+
-  geom_line(alpha = 0.5)+
-  xlab("Year") + ylab("Range")
-
-
+# using Geom_density_ridges plot we can visualize the spread of gdpPercap between continents. Based on this plot we can say Ocenia and Europe have more variability of gdpPercapita between their countries. In contrast Asia, Africa and Americas show a narrow spread.
 
 gapminder %>% 
-  ggplot(aes(gdpPercap, continent, fill = continent)) +
-  ggridges::geom_density_ridges()
-
+  ggplot(aes(gdpPercap, continent, fill = continent)) + 
+  scale_x_log10(label = scales::comma_format()) + 
+  ggridges::geom_density_ridges() + 
+  xlab("Log10(gdpPerCap)") 
 ```
-
-
-
 
 
 #(Task Option 5)How is life expectancy changing over time on different continents?
 
-
 ```{r}
+# 1: By using separate plot for each continent. Based on these plots except for some countries in Africa and a few countries in Asia and Americas with some fluctuations, life expectancy has increased for most countries over the years.
+
 gapminder %>%
 ggplot(aes(year, lifeExp, group = country, colour = continent)) +
   geom_line(alpha = 0.5) +
   scale_x_log10( labels = scales::comma_format())+
   facet_wrap(~ continent)
+```
+```{r}
 
-Africa <- gapminder %>%
-  filter(continent == "Africa") %>%
-  group_by(year) %>%
-  summarise(mean= mean(lifeExp))
+# 2: By calculating the average of life expectancy for each continent and showing in one plot. 
 
-Africa
-  
-
-
+gapminder %>% 
+  group_by(continent, year) %>%
+  summarise(mean_lifeExp = mean(lifeExp)) %>%
+  ggplot(aes(year, mean_lifeExp, color = continent)) +
+  geom_line(alpha = 1) +
+  ylab("mean Life Expectancy")
 ```
 
-#Based on this plot except for some countries in Africa and a few countries in Asia and America life expectancy has increased for most countries over the years. 
