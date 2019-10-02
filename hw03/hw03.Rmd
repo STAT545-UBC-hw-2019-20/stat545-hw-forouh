@@ -50,13 +50,12 @@ labs(title = "GDP per Capita per Continent", x = "Continent", y = "GDP per Capit
 
 ```{r, echo=TRUE}
 
-# using Geom_density_ridges plot we can visualize the spread of gdpPercap between continents. Based on this plot we can say Ocenia and Europe have more variability of gdpPercapita between their countries. In contrast Asia, Africa and Americas show a narrow spread.
+# using Geom_density_ridges plot we can visualize the spread of gdpPercap between continents. Based on this plot we can say Ocenia and Europe have more variability of gdpPercapita between their countries. In contrast Asia, Africa and Americas show a narrow spread. Also distributions of all continents are skewed to the left. 
 
 gapminder %>% 
   ggplot(aes(gdpPercap, continent, fill = continent)) + 
-  scale_x_log10(label = scales::comma_format()) + 
-  ggridges::geom_density_ridges() + 
-  xlab("Log10(gdpPerCap)") 
+  ggridges::geom_density_ridges() 
+  
 ```
 
 
