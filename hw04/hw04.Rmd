@@ -1,0 +1,96 @@
+---
+title: "HW04"
+author: "Forouh Kalantari"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+library(gapminder) 
+library(rmarkdown)
+library(tibble)
+library(DT)
+library(tidyverse)
+library(tsibble)
+library(scales)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(tidyr)
+```
+
+## Exercise 1: Univariate Data Reshaping
+### Univariate Option 1
+#### Gapminder original dataset 
+```{r, echo=TRUE} 
+DT::datatable(gapminder)
+```
+
+#### 1.1 Make a tibble with one row per year, and columns for life expectancy for Iran, Turkey, Afghanistan.
+```{r, echo=TRUE}
+gapminder_wide <- gapminder %>%
+  filter(country == "Iran"| country == "Turkey" | country == "Afghanistan")%>%
+  select(country, year, lifeExp)%>%
+  pivot_wider(id_cols = year, 
+               names_from = country,
+               values_from = lifeExp)
+DT::datatable (gapminder_wide) 
+```
+
+#### 1.2 scatterplot of life expectancy for Iran (green) vs Afghanistan (red) 
+```{r, echo=TRUE}
+gapminder_wide %>%
+  ggplot( aes(x= year))+ 
+  labs(y = "Life Expectancy")+
+  geom_point (aes(y = Iran), colour = "orange") +
+  geom_point (aes(y = Afghanistan), colour = "black") 
+
+```
+
+#### 1.3 Re-lengthen the data
+```{r, echo=TRUE}
+ gapminder_wide %>% 
+  pivot_longer(cols = -year,
+               names_to = "country",
+               values_to = "lifeExp") %>%
+  DT::datatable()
+  
+```
+
+## Exercise 2: Multivariate Data Reshaping
+### Multivariate Option 1
+#### 2.1 make a tibble with one row per year, and columns for life expectancy and GDP per capita for Canada and Germany. 
+```{r}
+gapminder_wide2 <- gapminder %>%
+  filter(country == "Canada"| country == "Germany")%>%
+  select(country, year, lifeExp, gdpPercap)%>%
+  pivot_wider(id_cols = year, 
+               names_from = country,
+              names_sep = "_",
+               values_from = c(lifeExp, gdpPercap))
+DT::datatable (gapminder_wide2) 
+
+```
+
+#### 2.2 Re-lengthen the data
+```{r}
+gapminder_wide2 %>% 
+  pivot_longer(cols = -year,
+               names_to = c (".value","country"), 
+               names_sep = "_") %>%
+  DT::datatable()
+  
+```
+
+
+## Exercise 3: Table Joins
+## wedding guestlist and email addresses
+```{r}
+guest <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/attend.csv")
+email <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/emails.csv")
+```
+
+#### 3.1 For each guest in the guestlist (guest tibble), add a column for email address, which can be found in the email tibble. 

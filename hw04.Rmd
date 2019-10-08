@@ -1,0 +1,25 @@
+---
+title: "HW04"
+author: "Forouh Kalantari"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+library(gapminder) 
+library(rmarkdown)
+library(tibble)
+library(DT)
+library(tidyverse)
+library(tsibble)
+library(scales)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(tidyr)
+```
+
+### Univariate Option 1
