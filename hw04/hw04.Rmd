@@ -40,7 +40,7 @@ gapminder_wide <- gapminder %>%
 DT::datatable (gapminder_wide) 
 ```
 
-#### 1.2 scatterplot of life expectancy for Iran (green) vs Afghanistan (red) 
+#### 1.2 scatterplot of life expectancy for Iran (orange) vs Afghanistan (black) 
 ```{r, echo=TRUE}
 gapminder_wide %>%
   ggplot( aes(x= year))+ 
