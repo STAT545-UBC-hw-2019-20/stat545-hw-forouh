@@ -29,7 +29,7 @@ library(tidyr)
 DT::datatable(gapminder)
 ```
 
-#### 1.1 Make a tibble with one row per year, and columns for life expectancy for Iran, Turkey, Afghanistan.
+#### 1.1 Make a tibble with one row per year, and columns for life expectancy of Iran, Turkey, Afghanistan.
 ```{r, echo=TRUE}
 gapminder_wide <- gapminder %>%
   filter(country == "Iran"| country == "Turkey" | country == "Afghanistan")%>%
