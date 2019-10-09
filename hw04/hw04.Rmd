@@ -94,3 +94,29 @@ email <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/maste
 ```
 
 #### 3.1 For each guest in the guestlist (guest tibble), add a column for email address, which can be found in the email tibble. 
+#### I use separate_rows for each person having a row, then using left join I join the 2 tibbles 
+```{r}
+ sep_email = email %>%
+  separate_rows(guest, sep = ", ")
+
+guest %>%
+  left_join(sep_email, by = c("name" = "guest")) %>%
+  DT::datatable(options = list(scrollX = TRUE))
+```
+
+#### 3.2 Who do we have emails for, yet are not on the guestlist?
+#### I use antijoin of guest list to the email list 
+```{r}
+ sep_email %>%
+  anti_join(guest, by = c("guest" = "name")) %>%
+  DT::datatable()
+
+```
+
+#### 3.3 Make a guestlist that includes everyone we have emails for (in addition to those on the original guestlist).
+#### I use full_join () in original guest list and the list achieved from 3.2 
+```{r}
+guest %>%
+  full_join(sep_email, by = c("name" = "guest")) %>%
+  DT::datatable(options = list(scrollX = TRUE))
+```
