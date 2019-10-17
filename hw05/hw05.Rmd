@@ -1,0 +1,170 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r,r, warning=FALSE, message=FALSE}
+library(gapminder)
+library(tidyverse)
+library(dplyr)
+library(forcats)
+library(ggplot2)
+library(tibble)
+library(here)
+library(DT)
+
+```
+
+
+## Exercise2: factor management
+
+#### In the gapminder data set I explore continent variable. first, I confirm that continent is a factor
+```{r}
+gapminder$continent %>%
+  class()
+```
+
+#### Then I check to see how many levels are there in this factor
+```{r}
+gapminder$continent %>%
+  nlevels()
+```
+
+#### Then I identify these different levels
+```{r}
+gapminder$continent %>%
+  levels()
+```
+
+#### I get the number of entries per level
+```{r}
+gapminder %>%
+  count(continent) %>%
+  datatable()
+```
+
+### Now I drop Ocenia from list and it is no longer in levels. 
+```{r}
+drop_ocn = gapminder %>%
+  filter(continent != "Oceania") %>%
+  mutate(continent = fct_drop(continent))
+  levels(drop_ocn$continent)
+  
+ drop_ocn %>%
+  count(continent) %>%
+  datatable()
+```
+
+### Reorder the levels of country or continent. Use the forcats package to change the order of the factor levels, based on summarized information of one of the quantitative variables. Consider experimenting with a summary statistic beyond the most basic choice of the mean/median. Use the forcats package in the tidyverse for this, rather than the baseR function as.factor
+
+```{r}
+gap_reorder = gapminder %>%
+  mutate(continent = fct_reorder(continent, gdpPercap, max))
+
+levels(gap_reorder$continent)
+```
+
+#### Based on this we see that the level of continent that was 'Africa' Americas' ' Asia''Europe'and 'Oceania' has changed to "Africa"   "Oceania"  "Americas" "Europe"   "Asia" (in an order from min to max). 
+```{r}
+gapminder%>%
+  group_by(continent, gdpPercap) %>%
+  summarise(maxgdp = max(gdpPercap)) %>%
+  ggplot(aes(continent, gdpPercap, color = continent)) +
+  geom_point(alpha = 1) +
+  ylab("gdppercap")
+
+gap_reorder%>% 
+  group_by(continent, gdpPercap) %>%
+  summarise(maxgdp = max(gdpPercap)) %>%
+  ggplot(aes(continent, gdpPercap, color = continent)) +
+  geom_point(alpha = 1) +
+  ylab("gdppercap")
+```
+
+
+### Explore the effects of re-leveling a factor in a tibble. I re-level the data that I have the levels'Europe' and 'Americas' are first. 
+```{r}
+gap_relevel = gapminder %>%
+  mutate(continent = fct_relevel(continent,"Europe", "Americas"))
+
+levels(gap_relevel$continent)
+```
+
+
+### Based on this we can see the difference in data tables 
+```{r}
+gap_reorder %>%
+  arrange(continent) %>%
+  DT::datatable()
+
+gap_relevel %>%
+  arrange(continent) %>%
+  DT::datatable()
+
+
+```
+
+### Also we can see the difference ploting releveled and reordered one. 
+```{r}
+gap_reorder%>% 
+  group_by(continent, gdpPercap) %>%
+  summarise(maxgdp = max(gdpPercap)) %>%
+  ggplot(aes(continent, gdpPercap, color = continent)) +
+  geom_boxplot() +
+  theme_bw() +
+  ylab("gdppercap")
+
+gap_relevel%>% 
+  group_by(continent, gdpPercap) %>%
+  summarise(maxgdp = max(gdpPercap)) %>%
+  ggplot(aes(continent, gdpPercap, color = continent)) +
+  geom_boxplot() +
+  theme_bw() +
+  ylab("gdppercap")
+
+```
+
+## Exercise 3: File input/output
+
+```{r}
+gap_new <- gapminder %>%
+  filter(year == max(year)) %>%
+  group_by(continent, year) %>%
+  summarize(meanlifeExp = mean(lifeExp)) %>%
+  pivot_wider(id_cols = continent,
+              names_from = year,
+              names_prefix = "mean lifeExp year",
+              values_from = meanlifeExp)
+  
+gap_new %>%
+  DT::datatable()
+```
+
+
+
+```{r}
+write_csv(gap_new,
+          here("hw05", "data", "gapminder_new_meanlifeExp.csv"))
+```
+
+```{r}
+gap_new_csv = read_csv(here("hw05", "data", "gapminder_new_meanlifeExp.csv"))
+
+gap_new_csv %>%
+  DT::datatable()
+```
+
+```{r}
+gap_new_csv$continent %>%
+  class()
+
+gap_new$continent %>%
+  class()
+
+
+```
+
+
+
+## Exercise 4: Visualization design
+
