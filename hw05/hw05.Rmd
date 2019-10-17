@@ -18,7 +18,7 @@ library(DT)
 
 ## Exercise2: factor management
 
-#### In the gapminder data set I explore continent variable. first, I confirm that continent is a factor
+#### In the gapminder data set I explore continent variable. first, I confirm that continent is a factor.
 ```{r}
 gapminder$continent %>%
   class()
