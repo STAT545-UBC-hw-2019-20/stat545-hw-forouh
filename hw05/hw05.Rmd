@@ -60,7 +60,7 @@ drop_ocn = gapminder %>%
   datatable()
 ```
 
-#### Reorder the levels of country or continent.I Use the forcats package to change the order of the continet levels.Based on this we see that the level of continent that was 'Africa' Americas' ' Asia''Europe'and 'Oceania' has changed to "Africa"   "Oceania"  "Americas" "Europe"   "Asia" (in an order from min to max). 
+#### Reorder the levels of country or continent.I use the forcats package to change the order of the continet levels.Based on this we see that the level of continent that was 'Africa' Americas' ' Asia''Europe'and 'Oceania' has changed to "Africa"   "Oceania"  "Americas" "Europe"   "Asia" (in an order from min to max). 
 ```{r, echo=TRUE}
 gap_reorder = gapminder %>%
   mutate(continent = fct_reorder(continent, gdpPercap, max))
