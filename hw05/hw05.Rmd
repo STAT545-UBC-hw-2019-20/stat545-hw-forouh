@@ -19,37 +19,37 @@ library(gridExtra)
 
 ```
 ## Exercise 1: Explain the value of the here::here package
-#### here::here package is specifically useful when diffirent people are collaborating in R. In General, it will provide a local copy of the project for the collaborators. here::here will be functional by specifying only the path from the project root, regardless of where the local copy of the project is saved for each collaborators. It will also make it easier to detect the root directory used in a R studio project. 
+#### here::here package is specifically useful when diffirent people are collaborating in R. In General, it will provide a local copy of the project for the collaborators. here::here will be functional by specifying only the path from the project root, regardless of where the local copy of the project is saved for each collaborators. It will also make it easier to detect the root directory used in a R studio project. In another word, instead of specifying the full path we can only specify the path from the project root to the sub_direcory.  
 
 ## Exercise2: factor management
 
 #### In the gapminder data set I explore continent variable. first, I confirm that continent is a factor.
-```{r}
+```{r, echo=TRUE}
 gapminder$continent %>%
   class()
 ```
 
 #### Then I check to see how many levels are there in this factor
-```{r}
+```{r, echo=TRUE}
 gapminder$continent %>%
   nlevels()
 ```
 
-#### Then I identify these different levels which are "Africa"   "Americas" "Asia"     "Europe"   "Oceania"
-```{r}
+#### Then I identify these different levels which are "Africa"   "Americas" "Asia"     "Europe"   "Oceania".
+```{r, echo=TRUE}
 gapminder$continent %>%
   levels()
 ```
 
 #### I get the number of entries per level and the table below shows it. 
-```{r}
+```{r, echo=TRUE}
 gapminder %>%
   count(continent) %>%
   datatable()
 ```
 
 #### Now I drop Ocenia from list and it is no longer in levels. The following table confirms it. 
-```{r}
+```{r, echo=TRUE}
 drop_ocn = gapminder %>%
   filter(continent != "Oceania") %>%
   mutate(continent = fct_drop(continent))
@@ -60,17 +60,16 @@ drop_ocn = gapminder %>%
   datatable()
 ```
 
-### Reorder the levels of country or continent. Use the forcats package to change the order of the factor levels, based on summarized information of one of the quantitative variables. Consider experimenting with a summary statistic beyond the most basic choice of the mean/median. Use the forcats package in the tidyverse for this, rather than the baseR function as.factor
-
-```{r}
+#### Reorder the levels of country or continent.I Use the forcats package to change the order of the continet levels.Based on this we see that the level of continent that was 'Africa' Americas' ' Asia''Europe'and 'Oceania' has changed to "Africa"   "Oceania"  "Americas" "Europe"   "Asia" (in an order from min to max). 
+```{r, echo=TRUE}
 gap_reorder = gapminder %>%
   mutate(continent = fct_reorder(continent, gdpPercap, max))
 
 levels(gap_reorder$continent)
 ```
 
-#### Based on this we see that the level of continent that was 'Africa' Americas' ' Asia''Europe'and 'Oceania' has changed to "Africa"   "Oceania"  "Americas" "Europe"   "Asia" (in an order from min to max). 
-```{r}
+#### These are the plots before fct_reorder and after fct_reorder. 
+```{r, echo=TRUE}
 gapminder%>%
   group_by(continent, gdpPercap) %>%
   summarise(maxgdp = max(gdpPercap)) %>%
@@ -87,8 +86,8 @@ gap_reorder%>%
 ```
 
 
-### Explore the effects of re-leveling a factor in a tibble. I re-level the data that I have the levels'Europe' and 'Americas' are first. 
-```{r}
+#### Explore the effects of re-leveling a factor in a tibble. I re-level the data that I have the levels'Europe' and 'Americas' coming first. 
+```{r, echo=TRUE}
 gap_relevel = gapminder %>%
   mutate(continent = fct_relevel(continent,"Europe", "Americas"))
 
@@ -96,8 +95,8 @@ levels(gap_relevel$continent)
 ```
 
 
-### Based on this we can see the difference in data tables 
-```{r}
+#### These are tables before fct_relevel with Africa coming first and after fct_relevel  with Europe coming first. 
+```{r, echo=TRUE}
 gap_reorder %>%
   arrange(continent) %>%
   DT::datatable()
@@ -109,8 +108,8 @@ gap_relevel %>%
 
 ```
 
-### Also we can see the difference ploting releveled and reordered one. 
-```{r}
+#### Also we can see the difference ploting releveled and reordered one.
+```{r, echo=TRUE}
 gap_reorder%>% 
   group_by(continent, gdpPercap) %>%
   summarise(maxgdp = max(gdpPercap)) %>%
@@ -130,8 +129,8 @@ gap_relevel%>%
 ```
 
 ## Exercise 3: File input/output
-
-```{r}
+#### I create a table of meanlifeexpectancy for continents in year 2007 and I define it as gap_new
+```{r, echo=TRUE}
 gap_new <- gapminder %>%
   filter(year == max(year)) %>%
   group_by(continent, year) %>%
@@ -146,36 +145,32 @@ gap_new %>%
 ```
 
 
-
-```{r}
+#### I create a folder in my Hw05 and call it data and write this gap_new dataset to CSV 
+```{r, echo=TRUE}
 write_csv(gap_new,
           here("hw05", "data", "gapminder_new_meanlifeExp.csv"))
 ```
 
-```{r}
+#### I read in the dataset from CSV. 
+```{r, echo=TRUE}
 gap_new_csv = read_csv(here("hw05", "data", "gapminder_new_meanlifeExp.csv"))
 
 gap_new_csv %>%
   DT::datatable()
 ```
 
-```{r}
+#### Again I specify the class of saved data and compare it to the original data before saving and we see that the class has been changed and it is not a factor anymore and it is character 
+```{r, echo=TRUE}
 gap_new_csv$continent %>%
   class()
 
 gap_new$continent %>%
   class()
-
-
 ```
 
-
-
-## Exercise 4: Visualization design. Create a side-by-side plot and juxtapose your first attempt (show the original figure as-is) with a revised attempt after some time spent working on it and implementing principles of effective plotting principles. Comment and reflect on the differences.
+## Exercise 4: Visualization design. 
 #### I will re plot Hw03 (Task Option 3) the spread of GDP per capita within the continents
 #### This is the original plot I made in that assignment. 
-
- 
 ```{r}
 # before 
 old_plot = gapminder %>% 
@@ -184,10 +179,7 @@ old_plot = gapminder %>%
 old_plot
 ```
 
-#### 1-changing the x-axis to a log scale so that the spread of all  continents are not towards left. There is a different pattern of spread in all continents for GdpPercap now.  
-#### 2-relabeling the plot so that we know what is the purpose of this plot
-#### 4- Being able to define a color of ineterest
-#### 5-replacing the grey theme with white so that it is more visible 
+#### This is the plot after changes has been committed 
 ```{r}
 #after
 new_plot = gapminder%>%
@@ -198,20 +190,23 @@ ggplot(aes(gdpPercap, continent, fill = continent)) +
   labs(title = "Spread of gdppercap per Continent",
        x = "GdpPercap",
        y = "Continent") +
-  theme_bw() +
-  theme(legend.position = "none")
+  theme_bw() 
+
 new_plot
 
 ```
 
-#### we can compare 2 plots side-by-side (Old plot vs to new plot)
+#### we can compare 2 plots side-by-side 
+
+#### 1-changing the x-axis to a log scale so that the spread of all  continents are not towards left. There is a different pattern of spread in all continents for GdpPercap now.  
+#### 2-relabeling the plot so that we know what is the purpose of this plot
+#### 4- Being able to define a color of ineterest
+#### 5-replacing the grey theme with white so that it is more visible
 ```{r}
 grid.arrange(old_plot,new_plot, nrow = 1)
 ```
 
-
 ## Exercise 5: Writing figures to file
-
 #### I am saving the newplot form Exercise 4 into plot file in my Hw05 folder.
 ```{r}
 ggsave(here("hw05", "plot", "EX4_newplot.png"),
@@ -219,3 +214,7 @@ ggsave(here("hw05", "plot", "EX4_newplot.png"),
        width = 3, height = 2.5, scale = 1.5)
 
 ```
+
+#### I am reloading the plot. 
+![](https://stat545-ubc-hw-2019-20.github.io/stat545-hw-forouh/hw05/plot/EX4_newplot.png) 
+
