@@ -1,5 +1,6 @@
 ---
-title: "Untitled"
+title: "HW05"
+author: "Forouh Kalantari"
 output: html_document
 ---
 
@@ -12,9 +13,13 @@ library(ggplot2)
 library(tibble)
 library(here)
 library(DT)
+library(ggridges)
+library(scales)
+library(gridExtra)
 
 ```
-
+## Exercise 1: Explain the value of the here::here package
+#### here::here package is specifically useful when diffirent people are collaborating in R. In General, it will provide a local copy of the project for the collaborators. here::here will be functional by specifying only the path from the project root, regardless of where the local copy of the project is saved for each collaborators. It will also make it easier to detect the root directory used in a R studio project. 
 
 ## Exercise2: factor management
 
@@ -30,20 +35,20 @@ gapminder$continent %>%
   nlevels()
 ```
 
-#### Then I identify these different levels
+#### Then I identify these different levels which are "Africa"   "Americas" "Asia"     "Europe"   "Oceania"
 ```{r}
 gapminder$continent %>%
   levels()
 ```
 
-#### I get the number of entries per level
+#### I get the number of entries per level and the table below shows it. 
 ```{r}
 gapminder %>%
   count(continent) %>%
   datatable()
 ```
 
-### Now I drop Ocenia from list and it is no longer in levels. 
+#### Now I drop Ocenia from list and it is no longer in levels. The following table confirms it. 
 ```{r}
 drop_ocn = gapminder %>%
   filter(continent != "Oceania") %>%
@@ -167,4 +172,50 @@ gap_new$continent %>%
 
 
 ## Exercise 4: Visualization design. Create a side-by-side plot and juxtapose your first attempt (show the original figure as-is) with a revised attempt after some time spent working on it and implementing principles of effective plotting principles. Comment and reflect on the differences.
+#### I will re plot Hw03 (Task Option 3) the spread of GDP per capita within the continents
+#### This is the original plot I made in that assignment. 
 
+ 
+```{r}
+# before 
+old_plot = gapminder %>% 
+  ggplot(aes(gdpPercap, continent, fill = continent)) + 
+  ggridges::geom_density_ridges() 
+old_plot
+```
+
+#### 1-changing the x-axis to a log scale so that the spread of all  continents are not towards left. There is a different pattern of spread in all continents for GdpPercap now.  
+#### 2-relabeling the plot so that we know what is the purpose of this plot
+#### 4- Being able to define a color of ineterest
+#### 5-replacing the grey theme with white so that it is more visible 
+```{r}
+#after
+new_plot = gapminder%>%
+ggplot(aes(gdpPercap, continent, fill = continent)) +
+  geom_density_ridges(alpha = 0.7) +
+  scale_discrete_manual("fill", values = c("green", "red", "purple", "blue", "orange")) +
+  scale_x_log10(labels = comma_format()) +
+  labs(title = "Spread of gdppercap per Continent",
+       x = "GdpPercap",
+       y = "Continent") +
+  theme_bw() +
+  theme(legend.position = "none")
+new_plot
+
+```
+
+#### we can compare 2 plots side-by-side (Old plot vs to new plot)
+```{r}
+grid.arrange(old_plot,new_plot, nrow = 1)
+```
+
+
+## Exercise 5: Writing figures to file
+
+#### I am saving the newplot form Exercise 4 into plot file in my Hw05 folder.
+```{r}
+ggsave(here("hw05", "plot", "EX4_newplot.png"),
+       plot = new_plot,
+       width = 3, height = 2.5, scale = 1.5)
+
+```
